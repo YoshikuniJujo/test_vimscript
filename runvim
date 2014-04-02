@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo $@ | sed -e "s/ /\n/g" > tmp.txt
+vim -esS $1 tmp.txt -cwq
+cat tmp.txt
