@@ -2,5 +2,5 @@ let args = getline(2, 20)
 normal ggdG
 
 function! Print(val)
-	execute "normal i" . a:val . "\<ESC>"
+	execute "normal i" . a:val . "\n\<ESC>"
 endfunction
