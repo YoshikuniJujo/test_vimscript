@@ -1,0 +1,41 @@
+set nohlsearch
+set incsearch
+set ignorecase
+set smartcase
+set backspace=
+
+if has("autocmd")
+	autocmd FileType ruby setlocal sw=8 sts=8 ts=8 noet
+endif
+
+set relativenumber
+highlight LineNr ctermfg=6
+
+noremap <expr> <C-f> max([winheight(0) - 2, 1]) . "\<C-d>" . (line('.') > line('$') - winheight(0) ? 'L' : 'H')
+noremap <expr> <C-b> max([winheight(0) - 2, 1]) . "\<C-u>" . (line('.') < 1 + winheight(0) ? 'H' : 'L')
+noremap <expr> <C-e> (line('w$') >= line('$') ? '' : "\<C-e>")
+"noremap <expr> zt (min([line('$') - line('w$'), line('.') - line('w0')]) > 0 ? min([line('$') - line('w$'), line('.') - line('w0')]) . "\<C-e>" : "")
+
+function! Zt() abort
+	let n = min([line('$') - line('w$'), line('.') - line('w0')])
+	execute (n > 0 ? ("normal " . n . "\<C-e>") : "")
+endfunction
+command Zt call Zt()
+noremap <expr> zt ":Zt\n"
+
+function! Zz() abort
+	let m = line('w0') + (line('w$') - line('w0')) / 2
+	let n = line('.') - m
+	if n == 0
+		execute "echo ''"
+	elseif n > 0
+		let k = min([line('$') - line('w$'), n])
+		execute "normal " . k . "\<C-e>"
+	else
+		execute "echo ''"
+		execute "normal " . - n . "\<C-y>"
+	endif
+endfunction
+
+command! Zz call Zz()
+noremap <expr> zz ":Zz\n"
